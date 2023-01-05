@@ -15,11 +15,11 @@ public class ProductDAO {
 
     public List<Product> getAll(){return this.productRepository.findAll();}
 
-    public Optional<Product> getById(String id){
+    public Optional<Product> getById(Integer id){
         return this.productRepository.findById(id);
     }
 
-    public Product update(String id, Product product){
+    public Product update(Integer id, Product product){
         Optional<Product> productToUpdate = this.productRepository.findById(id);
 
         if(productToUpdate.isPresent()){
@@ -38,7 +38,7 @@ public class ProductDAO {
      * Deletes a certain product with a ID
      * @param id
      */
-    public void deleteById(String id){
+    public void deleteById(Integer id){
         this.productRepository.deleteById(id);
     }
 }

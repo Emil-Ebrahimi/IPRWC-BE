@@ -22,7 +22,7 @@ public class JwtTokenUtil {
 		
 		return Jwts.builder()
 				.setSubject(user.getId())
-				.setIssuer("CGI")
+				.setIssuer("s1132776")
 				.claim("role", user.getRole().toString())
 				.setIssuedAt(new Date())
 				.setExpiration(new Date(System.currentTimeMillis() + EXPIRE_DURATION))

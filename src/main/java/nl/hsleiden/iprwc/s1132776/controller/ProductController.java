@@ -35,23 +35,18 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
-    public ResponseEntity<Product> getProductById(@AuthenticationPrincipal User user, @PathVariable("id") String id){
+    public ResponseEntity<Product> getProductById(@AuthenticationPrincipal User user, @PathVariable("id") int id){
         Optional<Product> optionalProduct = productDAO.getById(id);
 
         if(optionalProduct.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-
-        return switch (user.getRole().getName()) {
-            case "USER", "ADMIN" -> ResponseEntity.ok().body(optionalProduct.get());
-            default -> ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        };
+        return ResponseEntity.ok().body(optionalProduct.get());
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<Product> updateProduct(@PathVariable String id, @RequestBody Product product) {
+    public ResponseEntity<Product> updateProduct(@PathVariable Integer id, @RequestBody Product product) {
         try {
             return ResponseEntity.ok().body(productDAO.update(id, product));
         }catch (Exception e){
@@ -61,7 +56,7 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<Product> deleteProduct(@PathVariable String id) {
+    public ResponseEntity<Product> deleteProduct(@PathVariable Integer id) {
         try {
             productDAO.deleteById(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
