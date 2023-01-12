@@ -1,6 +1,8 @@
 package nl.hsleiden.iprwc.s1132776.model.database;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -9,7 +11,9 @@ import java.util.Date;
 @Table(name="products")
 public class Product {
     @Id
-    private int id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    private String id;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -25,17 +29,18 @@ public class Product {
     @Column(name = "short_description")
     private String shortDescription;
 
-    @Column
+    @Column(nullable = false)
     private String description;
 
-    @Column
-    private String category;
-
-    @Column
+    @Column(nullable = false)
     private String name;
 
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JsonIgnoreProperties("products")
+    private Category category;
 
-    public Product(int id) {
+
+    public Product(String id) {
         this.id = id;
     }
 
@@ -50,12 +55,12 @@ public class Product {
         this.stock = stock;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -67,11 +72,11 @@ public class Product {
         this.description = description;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 

@@ -1,7 +1,9 @@
 package nl.hsleiden.iprwc.s1132776.controller;
+
 import nl.hsleiden.iprwc.s1132776.DAO.ProductDAO;
 import nl.hsleiden.iprwc.s1132776.model.database.Product;
 import nl.hsleiden.iprwc.s1132776.model.database.User;
+import nl.hsleiden.iprwc.s1132776.model.http.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,12 +32,13 @@ public class ProductController {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(productDAO.save(product));
         }catch (Exception e){
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@AuthenticationPrincipal User user, @PathVariable("id") int id){
+    public ResponseEntity<Product> getProductById(@AuthenticationPrincipal User user, @PathVariable("id") String id){
         Optional<Product> optionalProduct = productDAO.getById(id);
 
         if(optionalProduct.isEmpty()){
@@ -46,7 +49,7 @@ public class ProductController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<Product> updateProduct(@PathVariable Integer id, @RequestBody Product product) {
+    public ResponseEntity<Product> updateProduct(@PathVariable String id, @RequestBody Product product) {
         try {
             return ResponseEntity.ok().body(productDAO.update(id, product));
         }catch (Exception e){
@@ -56,13 +59,28 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<Product> deleteProduct(@PathVariable Integer id) {
+    public ResponseEntity<Product> deleteProduct(@PathVariable String id) {
         try {
             productDAO.deleteById(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+    }
+
+    @PatchMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<?> editProduct(@PathVariable("id") String id, @RequestBody Product productToUpdate) {
+
+        productToUpdate.setId(id);
+
+        try {
+            return ResponseEntity.ok(productDAO.save(productToUpdate));
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("Invalid data", List.of()));
+        }
+
     }
 
 }
