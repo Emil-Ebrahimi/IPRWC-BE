@@ -34,7 +34,7 @@ public class User implements UserDetails {
     private String email;
 
     @Column(nullable = false, length = 64)
-    @Length(min = 5, max = 64)
+    @Length(min = 8, max = 64)
     @JsonIgnore
     private String password;
 
@@ -161,5 +161,11 @@ public class User implements UserDetails {
         this.role = role;
     }
 
+    public Date getCreateDate() {
+        return createDate;
+    }
 
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
 }

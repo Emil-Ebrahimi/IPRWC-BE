@@ -1,0 +1,7 @@
+package nl.hsleiden.iprwc.s1132776.DAO;
+
+import nl.hsleiden.iprwc.s1132776.model.database.Category;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CategoryRepository extends JpaRepository<Category, String> {
+}

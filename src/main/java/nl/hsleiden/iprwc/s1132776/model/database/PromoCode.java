@@ -1,0 +1,46 @@
+package nl.hsleiden.iprwc.s1132776.model.database;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name="promocode")
+public class PromoCode {
+
+
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    private String id;
+
+    @Column(nullable = false, length = 50, unique = true)
+    private String name;
+
+    @Column(nullable = false, length = 10, unique = false)
+    private String korting;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getKorting() {
+        return korting;
+    }
+
+    public void setKorting(String korting) {
+        this.korting = korting;
+    }
+}
