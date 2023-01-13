@@ -28,11 +28,13 @@ public class PromoCodeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PromoCode>> getCategories(){
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<List<PromoCode>> getPromoCodes(){
         return ResponseEntity.ok().body(promoCodeDAO.getAll());
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<PromoCode> createPromoCode(@RequestBody PromoCode promoCode){
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(promoCodeDAO.save(promoCode));
@@ -42,6 +44,7 @@ public class PromoCodeController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<PromoCode> getPromoCodeById(@AuthenticationPrincipal User user, @PathVariable("id") String id){
         Optional<PromoCode> optionalPromoCode = promoCodeDAO.getById(id);
 

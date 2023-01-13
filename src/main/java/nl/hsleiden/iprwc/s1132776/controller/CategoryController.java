@@ -28,11 +28,13 @@ public class CategoryController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<Category>> getCategories(){
         return ResponseEntity.ok().body(categoryDAO.getAll());
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Category> createCategory(@RequestBody Category category){
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(categoryDAO.save(category));
@@ -42,6 +44,7 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Category> getCategoryById(@AuthenticationPrincipal User user, @PathVariable("id") String id){
         Optional<Category> optionalCategory = categoryDAO.getById(id);
 

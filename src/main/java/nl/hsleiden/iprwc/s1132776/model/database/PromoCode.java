@@ -5,7 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 @Entity
-@Table(name="promocode")
+@Table(name="promocodes")
 public class PromoCode {
 
 
@@ -18,7 +18,7 @@ public class PromoCode {
     private String name;
 
     @Column(nullable = false, length = 10, unique = false)
-    private String korting;
+    private Integer korting;
 
     public String getId() {
         return id;
@@ -36,11 +36,11 @@ public class PromoCode {
         this.name = name;
     }
 
-    public String getKorting() {
+    public Integer getKorting() {
         return korting;
     }
 
-    public void setKorting(String korting) {
+    public void setKorting(Integer korting) {
         this.korting = korting;
     }
 }

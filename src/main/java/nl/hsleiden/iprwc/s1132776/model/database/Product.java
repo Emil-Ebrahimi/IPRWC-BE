@@ -1,11 +1,14 @@
 package nl.hsleiden.iprwc.s1132776.model.database;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="products")
@@ -26,8 +29,15 @@ public class Product {
     @Column
     private int price;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<Product> products = new HashSet<>();
+
     @Column(name = "short_description")
     private String shortDescription;
+
+    @Column(name = "imageSrc")
+    private String imageSrc;
 
     @Column(nullable = false)
     private String description;
@@ -90,5 +100,13 @@ public class Product {
 
     public String getName() {
         return name;
+    }
+
+    public String getImageSrc() {
+        return imageSrc;
+    }
+
+    public void setImageSrc(String imageSrc) {
+        this.imageSrc = imageSrc;
     }
 }
