@@ -17,7 +17,7 @@ public class AuthRequest {
 	/**
 	 * The password of the user.
 	 */
-	@NotNull @Length(min = 5, max = 10)
+	@NotNull @Length(min = 5, max = 124)
 	private String password;
 
 	public AuthRequest() {
